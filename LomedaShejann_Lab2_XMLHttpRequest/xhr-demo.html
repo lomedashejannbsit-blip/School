@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XMLHttpRequest Lab</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: #ffffff;
+            padding: 28px 36px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            width: 450px;
+        }
+        h2 {
+            margin-top: 0;
+            margin-bottom: 16px;
+            color: #1e293b;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 16px;
+        }
+        button:hover {
+            background-color: #1d4ed8;
+        }
+        #output {
+            background-color: #0f172a;
+            color: #38bdf8;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 14px;
+            text-align: left;
+            line-height: 1.5;
+            min-height: 60px;
+            word-break: break-word;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Exploring XMLHttpRequest</h2>
+        <button id="loadData">Load Post Data</button>
+        <div id="output">Click the button above to load data from server...</div>
+    </div>
+
+    <script>
+        document.getElementById("loadData").addEventListener("click", function() {
+            const output = document.getElementById("output");
+            output.innerHTML = "<em>Loading data via XHR...</em>";
+
+            const xhr = new XMLHttpRequest();
+            
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        const data = JSON.parse(xhr.responseText);
+                        output.innerHTML = `
+                            <strong>Post Title:</strong> ${data.title}<br><br>
+                            <strong>Content:</strong> ${data.body}
+                        `;
+                    } else {
+                        output.innerHTML = `<span style="color:#ef4444;">Error: ${xhr.status} ${xhr.statusText}</span>`;
+                    }
+                }
+            };
+
+            xhr.open("GET", "https://jsonplaceholder.typicode.com/posts/1", true);
+            xhr.send();
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+Lab Exercise 2: Exploring XMLHttpRequest - Guide Questions & Answers
+
+1. What is the difference between readyState and status in XMLHttpRequest?
+   In XMLHttpRequest, readyState and status track two completely different parts of an HTTP request:
+   
+   - readyState monitors the overall progress of the request object as it moves through its communication cycle. It changes across 5 numerical values from 0 to 4:
+     • 0 (UNSENT): The XHR object was created, but open() hasn't been called yet.
+     • 1 (OPENED): open() has been called, so the request is initialized.
+     • 2 (HEADERS_RECEIVED): send() was called, and the server headers/status are available.
+     • 3 (LOADING): The response body is actively downloading.
+     • 4 (DONE): The entire operation is complete.
+     
+   - status is the actual HTTP status code sent back by the server once the request finishes. For example, status 200 means success, 404 means the page/data was not found, and 500 means a server error occurred.
+   
+   In short: readyState tells us *how far along* the request is in its cycle, while status tells us *whether the server successfully fulfilled the request* once it finished.
+
+2. How can you make the request asynchronous?
+   To make an XMLHttpRequest asynchronous, you pass `true` as the third parameter inside the `xhr.open()` method call:
+   
+   xhr.open("GET", "https://jsonplaceholder.typicode.com/posts/1", true);
+   
+   The three arguments passed are the HTTP method ("GET"), the target URL, and the boolean value `true`, which explicitly tells the browser to process the request asynchronously in the background.
+
+3. Why is asynchronous communication recommended for web applications?
+   Asynchronous communication is recommended because web browsers run JavaScript on a single thread. If a request were synchronous, the entire browser window would completely freeze and block the user from clicking, scrolling, or typing while waiting for the server to reply.
+   
+   With asynchronous communication, the browser sends the HTTP request in the background while allowing the user to keep interacting with the website uninterrupted. Once the server sends back data, JavaScript updates just the affected part of the DOM dynamically without needing to reload the entire web page.
