@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 5 - PHP + JSON + JavaScript (AJAX)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: #ffffff;
+            padding: 28px 36px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            width: 340px;
+        }
+        h3 {
+            margin-top: 0;
+            margin-bottom: 16px;
+            color: #1e293b;
+            font-size: 17px;
+            font-weight: 600;
+        }
+        .form-group {
+            margin-bottom: 14px;
+            text-align: left;
+        }
+        label {
+            font-size: 14px;
+            color: #475569;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 6px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 9px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: #1d4ed8;
+        }
+        .code-box {
+            background-color: #0f172a;
+            color: #38bdf8;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 14px;
+            display: block;
+            margin-top: 16px;
+            word-break: break-all;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h3>Lab Exercise 5: PHP + JSON + JavaScript (AJAX)</h3>
+        <form id="userForm">
+            <div class="form-group">
+                <label for="username">Enter Name:</label>
+                <input type="text" id="username" value="Rene" required>
+            </div>
+            <button type="submit">Send Request</button>
+        </form>
+
+        <div id="output" class="code-box">{"status":"success","message":"Welcome, Rene!"}</div>
+    </div>
+
+    <script>
+        document.getElementById('userForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('username').value;
+            const outputDiv = document.getElementById('output');
+
+            fetch('lab5_process.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: nameInput })
+            })
+            .then(res => res.text())
+            .then(data => {
+                outputDiv.textContent = data;
+            })
+            .catch(err => {
+                outputDiv.textContent = 'Error: ' + err.message;
+            });
+        });
+    </script>
+
+</body>
+</html>
