@@ -1,0 +1,18 @@
+Lab Exercise 3: Exploring the Fetch API - Guide Questions & Answers
+
+1. What are the main differences between XMLHttpRequest and Fetch API?
+   The main differences come down to how they handle requests and process responses:
+   
+   - Promises vs Event Callbacks: XMLHttpRequest uses event listeners (like onreadystatechange) and state numbers (readyState), while Fetch API is built on modern ES6 Promises using .then() and .catch() chains (or async/await).
+   - HTTP Error Handling: XMLHttpRequest requires us to manually check if status === 200 inside event hooks. Fetch API only rejects its Promise on actual network failures; it does not automatically reject on HTTP error codes like 404 or 500. We must check response.ok manually.
+   - Syntax Complexity: Fetch API is much cleaner and requires less boilerplate setup code compared to setting up an XHR instance.
+
+2. Why is the Fetch API considered more modern and readable?
+   The Fetch API is considered more modern because it integrates seamlessly with JavaScript Promises. Instead of nesting multiple callback functions inside one another (which leads to hard-to-read "callback hell"), Fetch allows requests to be written sequentially in a clean left-to-right chain. It also uses cleaner data structures for handling request headers, payloads, and HTTP responses.
+
+3. What is the purpose of the .then() and .catch() methods in Fetch?
+   - .then(): Handles a Promise when it is successfully resolved. In Fetch, the first .then() receives the HTTP Response stream and converts it into data (such as returning response.json()), while the second .then() receives that converted JSON data so we can display it on the webpage.
+   - .catch(): Intercepts and handles any errors that happen during the execution chain, such as loss of internet connection, server connection timeouts, or broken request URLs.
+
+4. What happens when you send a POST request to the placeholder API?
+   When we send a POST request to the JSONPlaceholder API, the server accepts our submitted JSON payload ({ title, body, userId }), processes the data, and responds with an HTTP status code 201 (Created). It echoes back the data we sent along with a newly assigned unique identifier (Post ID: 101). Since JSONPlaceholder is a mock testing API, the fake post isn't permanently saved into a real database, but it confirms a successful creation response.

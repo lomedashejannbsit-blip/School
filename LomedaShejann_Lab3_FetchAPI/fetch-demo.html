@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch API Demo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: #ffffff;
+            padding: 28px 36px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            width: 460px;
+        }
+        h2 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            color: #1e293b;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .button-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 18px;
+        }
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            color: white;
+        }
+        .btn-get {
+            background-color: #2563eb;
+        }
+        .btn-get:hover {
+            background-color: #1d4ed8;
+        }
+        .btn-post {
+            background-color: #059669;
+        }
+        .btn-post:hover {
+            background-color: #047857;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        #output {
+            background-color: #0f172a;
+            color: #38bdf8;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 14px;
+            text-align: left;
+            line-height: 1.5;
+            min-height: 70px;
+            word-break: break-word;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Exploring the Fetch API</h2>
+        <div class="button-group">
+            <button id="loadData" class="btn-get">Load Post Data (GET)</button>
+            <button id="sendData" class="btn-post">Send Post Data (POST)</button>
+        </div>
+        <div id="output">Click a button above to execute a request...</div>
+    </div>
+
+    <script>
+        const output = document.getElementById("output");
+
+        // Task 2: GET Request Implementation
+        document.getElementById("loadData").addEventListener("click", function() {
+            output.innerHTML = "<em>Fetching post data...</em>";
+
+            fetch("https://jsonplaceholder.typicode.com/posts/1")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    output.innerHTML = `
+                        <strong>Post Title:</strong> ${data.title}<br><br>
+                        <strong>Content:</strong> ${data.body}
+                    `;
+                })
+                .catch(error => {
+                    output.innerHTML = `<span style="color:#ef4444;">Error: ${error.message}</span>`;
+                });
+        });
+
+        // Task 3: POST Request Implementation
+        document.getElementById("sendData").addEventListener("click", function() {
+            output.innerHTML = "<em>Sending POST request...</em>";
+
+            fetch("https://jsonplaceholder.typicode.com/posts", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: "My New Post",
+                    body: "Learning Fetch API is fun!",
+                    userId: 1
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                output.innerHTML = `
+                    <span style="color:#4ade80; font-weight:bold;">New Post Created!</span><br>
+                    <strong>Post ID:</strong> ${data.id}<br>
+                    <strong>Title:</strong> ${data.title}<br>
+                    <strong>Content:</strong> ${data.body}
+                `;
+            })
+            .catch(error => {
+                output.innerHTML = `<span style="color:#ef4444;">Error: ${error.message}</span>`;
+            });
+        });
+    </script>
+
+</body>
+</html>
